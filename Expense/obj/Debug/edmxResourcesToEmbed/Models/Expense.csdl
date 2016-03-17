@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ExpenseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CatID" />
+    </Key>
+    <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Desp" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Receipt" Relationship="Self.FK__Receipt__CatID__2D27B809" FromRole="Category" ToRole="Receipt" />
+  </EntityType>
+  <EntityType Name="MonthIncome">
+    <Key>
+      <PropertyRef Name="MonID" />
+    </Key>
+    <Property Name="MonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Income" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK__MonthInco__UserI__25869641" FromRole="MonthIncome" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Receipt">
+    <Key>
+      <PropertyRef Name="RecID" />
+    </Key>
+    <Property Name="RecID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CatID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Receipt__CatID__2D27B809" FromRole="Receipt" ToRole="Category" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Receipt__UserID__2E1BDC42" FromRole="Receipt" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MonthIncome" Relationship="Self.FK__MonthInco__UserI__25869641" FromRole="User" ToRole="MonthIncome" />
+    <NavigationProperty Name="Receipt" Relationship="Self.FK__Receipt__UserID__2E1BDC42" FromRole="User" ToRole="Receipt" />
+  </EntityType>
+  <Association Name="FK__Receipt__CatID__2D27B809">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CatID" />
+      </Principal>
+      <Dependent Role="Receipt">
+        <PropertyRef Name="CatID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MonthInco__UserI__25869641">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="MonthIncome" Type="Self.MonthIncome" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="MonthIncome">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Receipt__UserID__2E1BDC42">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Receipt">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ExpenseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Category" EntityType="Self.Category" />
+    <EntitySet Name="MonthIncome" EntityType="Self.MonthIncome" />
+    <EntitySet Name="Receipt" EntityType="Self.Receipt" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="FK__Receipt__CatID__2D27B809" Association="Self.FK__Receipt__CatID__2D27B809">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Receipt" EntitySet="Receipt" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MonthInco__UserI__25869641" Association="Self.FK__MonthInco__UserI__25869641">
+      <End Role="User" EntitySet="User" />
+      <End Role="MonthIncome" EntitySet="MonthIncome" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Receipt__UserID__2E1BDC42" Association="Self.FK__Receipt__UserID__2E1BDC42">
+      <End Role="User" EntitySet="User" />
+      <End Role="Receipt" EntitySet="Receipt" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
